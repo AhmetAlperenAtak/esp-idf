@@ -1,0 +1,32 @@
+# ESP32-C3 Industrial Secure WiFi Enterprise Partition Table
+# Optimized for Flash Encryption, Secure Boot, and OTA Updates
+#
+# Name,      Type, SubType,  Offset,   Size,      Flags
+# Bootloader and partition table (fixed by ESP-IDF)
+Bootloader,   boot, ,         0x0,      0x8000,
+Partition,    data, ,         0x8000,   0x1000,
+
+# NVS - Non-Volatile Storage (for WiFi credentials, settings)
+nvs,          data, nvs,      0x9000,   0x6000,
+
+# OTA Data - Stores which app partition is active
+otadata,      data, ota,      0xF000,   0x2000,
+
+# PHY Initialization Data
+phy_init,     data, phy,      0x11000,  0x1000,
+
+# NVS Keys - Encrypted storage for NVS encryption keys (IMPORTANT for security)
+nvs_keys,     data, nvs_keys, 0x12000,  0x4000,   encrypted
+
+# Factory Partition - Original firmware (fallback if OTA fails)
+factory,      app,  factory,  0x16000,  0x180000,
+
+# OTA App Partitions - For Over-The-Air firmware updates
+ota_0,        app,  ota_0,    0x196000, 0x180000,
+ota_1,        app,  ota_1,    0x316000, 0x180000,
+
+# SPIFFS - File system for logs, certificates, etc.
+storage,      data, spiffs,   0x496000, 0x60000,
+
+# Coredump - For debugging crashes (optional, can be disabled in production)
+coredump,     data, coredump, 0x4F6000, 0x10000,
